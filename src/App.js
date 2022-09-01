@@ -1,20 +1,44 @@
-import React, { useState } from 'react';
-import data from './data';
-import SingleQuestion from './Question';
+import React, { useState, useEffect } from "react";
+import Loading from "./Loading";
+import {data} from "./data"
+import Tours from "./Tours";
+// ATTENTION!!!!!!!!!!
+// I SWITCHED TO PERMANENT DOMAIN
+//const url = "https://course-api.com/react-tours-project";
 function App() {
-  const [questions, setQuestions] = useState(data);
+  const [loading, setLoading] = useState(false);
+  const [tours, setTours] = useState(data);
+
+
+  const removeTour = (id) => {
+    const newTours = tours.filter((tour) => tour.id !== id);
+    setTours(newTours);
+  };
+
+  if (tours.length === 0) {
+    return (
+      <main>
+        <div className="title">
+          <h2>no tours left</h2>
+          <button className="btn" onClick={() => setTours([])}>
+            refresh
+          </button>
+        </div>
+      </main>
+    );
+  }
+  if(loading){
+    return (
+      <main>
+        <Loading />
+      </main>
+    )
+  }
+
+ 
   return (
     <main>
-      <div className='container'>
-        <h3>questions and answers about login</h3>
-        <section className='info'>
-          {questions.map((question) => {
-            return (
-              <SingleQuestion key={question.id} {...question}></SingleQuestion>
-            );
-          })}
-        </section>
-      </div>
+      <Tours tours={data} removeTour = {removeTour}/>
     </main>
   );
 }
