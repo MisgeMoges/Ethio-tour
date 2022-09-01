@@ -1,42 +1,22 @@
-import React, { useState, useEffect } from 'react'
-import Loading from './Loading'
-import Tours from './Tours'
-import {data} from './data'
-
+import React, { useState } from 'react';
+import data from './data';
+import SingleQuestion from './Question';
 function App() {
-  const [loading, setLoading] = useState(true)
-  const [tours, setTours] = useState(data)
-
-  const removeTour = (id) => {
-    const newTours = tours.filter((tour) => tour.id !== id)
-    setTours(newTours)
-  }
-
- 
-  if (loading) {
-    return (
-      <main>
-        <Loading />
-      </main>
-    )
-  }
-  if (tours.length === 0) {
-    return (
-      <main>
-        <div className='title'>
-          <h2>no tours left</h2>
-          <button className='btn' onClick={() => setTours([])}>
-            refresh
-          </button>
-        </div>
-      </main>
-    )
-  }
+  const [questions, setQuestions] = useState(data);
   return (
     <main>
-      <Tours tours={tours} removeTour={removeTour} />
+      <div className='container'>
+        <h3>questions and answers about login</h3>
+        <section className='info'>
+          {questions.map((question) => {
+            return (
+              <SingleQuestion key={question.id} {...question}></SingleQuestion>
+            );
+          })}
+        </section>
+      </div>
     </main>
-  )
+  );
 }
 
-export default App
+export default App;
